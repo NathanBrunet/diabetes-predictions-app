@@ -108,7 +108,9 @@ user_input = pd.DataFrame([[pregnancies, plasma_glucose, diastolic_bp, triceps_t
                                    "SerumInsulin", "BMI", "DiabetesPedigree", "Age"])
 
 # Ensure the input has the same feature names and order as the training data
-user_input = user_input[X.columns.tolist()]  # Make sure columns are ordered as in X
+# Remove 'PatientID' if it's accidentally included in the columns
+valid_columns = [col for col in X.columns if col != 'PatientID']  # Remove 'PatientID' if it's in the list
+user_input = user_input[valid_columns]  # Make sure the columns match
 
 # Standardize the user input based on the scaler fitted to the training data
 user_input_scaled = scaler.transform(user_input)
@@ -120,3 +122,4 @@ if prediction == 1:
     st.write("### 🚨 Prediction: The patient is likely to have diabetes.")
 else:
     st.write("### ✅ Prediction: The patient is likely to not have diabetes.")
+
