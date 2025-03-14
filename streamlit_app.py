@@ -10,4 +10,6 @@ with st.expander("Data"):
     
     df = pd.read_csv("https://raw.githubusercontent.com/SuzyJoelly/diabetes-predictions-app/main/TAIPEI_diabetes.csv")
     
-    st.write(df.head())  
+    st.write(df.head()) 
+    
+    st.dataframe(df)
