@@ -16,7 +16,7 @@ with st.expander("Data"):
     X 
 
     st.write('**y**') 
-    y = df.diabetic
+    y = df.Diabetic
     y 
     
 
