@@ -20,7 +20,6 @@ with st.expander("Data"):
     y 
 
 with st.expander('Data visulization'): 
-    PlasmaGlucose,DiastolicBloodPressure,TricepsThickness,SerumInsulin
     st.scatter_chart(data=df, x='PlasmaGlucose', y='SerumInsulin', color='Diabetic')
                      
     
