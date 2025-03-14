@@ -15,7 +15,7 @@ st.markdown(
     """
     <style>
     body {
-        background-color: #F0F2F6;  /* Light background */
+        background-color: white;  /* Set to white */
         color: black;
     }
     .stButton button {
@@ -149,4 +149,3 @@ with col2:
         st.markdown(f"<h3 style='color: #D81B60; text-align: center;'>🚨 Prediction: The patient is likely to have diabetes.</h3>", unsafe_allow_html=True)
     else:
         st.markdown(f"<h3 style='color: #1E88E5; text-align: center;'>✅ Prediction: The patient is likely to not have diabetes.</h3>", unsafe_allow_html=True)
-
