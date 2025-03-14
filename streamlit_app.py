@@ -146,10 +146,26 @@ user_input_scaled = scaler.transform(user_input)
 # Make prediction
 prediction = model.predict(user_input_scaled)
 
-if prediction == 1:
-    st.write("### 🚨 Prediction: The patient is likely to have diabetes.")
-else:
-    st.write("### ✅ Prediction: The patient is likely to not have diabetes.")
+# Create two columns for layout: one for input and one for prediction output
+col1, col2 = st.columns([1, 2])  # [1, 2] means 1 part for input, 2 parts for output
+
+with col1:
+    st.subheader("📝 Enter Patient Data for Prediction")
+    st.write(f"**Age**: {age}")
+    st.write(f"**Pregnancies**: {pregnancies}")
+    st.write(f"**Plasma Glucose**: {plasma_glucose}")
+    st.write(f"**Diastolic BP**: {diastolic_bp}")
+    st.write(f"**Triceps Thickness**: {triceps_thickness}")
+    st.write(f"**Serum Insulin**: {serum_insulin}")
+    st.write(f"**BMI**: {bmi}")
+    st.write(f"**Diabetes Pedigree**: {diabetes_pedigree}")
+
+with col2:
+    # Display prediction result on the right side
+    if prediction == 1:
+        st.write("### 🚨 Prediction: The patient is likely to have diabetes.")
+    else:
+        st.write("### ✅ Prediction: The patient is likely to not have diabetes.")
 
 
 
