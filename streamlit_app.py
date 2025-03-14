@@ -7,5 +7,5 @@ st.info(
 )
 with st.expander ('Data'):
    st.write ('**Raw data**')  
- df = pd.read_csv('https://raw.githubusercontent.com/SuzyJoelly/diabetes-predictions-app/refs/heads/main/convertcsv.md')
+ df = pd.read_csv('https://raw.githubusercontent.com/SuzyJoelly/diabetes-predictions-app/refs/heads/main/TAIPEI_diabetes.csv')
 
