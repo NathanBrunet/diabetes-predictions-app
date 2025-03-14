@@ -10,3 +10,23 @@ with st.expander("Data"):
     
     df = pd.read_csv("https://raw.githubusercontent.com/SuzyJoelly/diabetes-predictions-app/main/TAIPEI_diabetes.csv")
     st.dataframe(df)
+    
+    st.write('**X**')
+    X = df.drop('Diabetic' , axis=1)
+    X 
+
+    st.write('**y**') 
+    y = df.diabetic
+    y 
+    
+
+
+
+    
+
+    
+
+
+
+    
+    
