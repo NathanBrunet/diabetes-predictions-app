@@ -2,6 +2,10 @@ import streamlit as st
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 
 # 🎨 Set Streamlit Page Configuration
 st.set_page_config(page_title="Diabetes Data Explorer", page_icon="📊", layout="wide")
@@ -54,6 +58,61 @@ st.write("### 🔥 Feature Correlations")
 fig, ax = plt.subplots(figsize=(10, 6))
 sns.heatmap(df.corr(), annot=True, cmap="coolwarm", linewidths=0.5, fmt=".2f", ax=ax)
 st.pyplot(fig)
+
+# 🚀 **Model Building and Prediction**
+
+# Split data into features (X) and target (y)
+X = df.drop("Diabetic", axis=1)
+y = df["Diabetic"]
+
+# Split data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Standardizing the features
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+# Train Random Forest Model
+model = RandomForestClassifier(random_state=42)
+model.fit(X_train, y_train)
+
+# Predict on test data
+y_pred = model.predict(X_test)
+
+# Evaluate model performance
+accuracy = accuracy_score(y_test, y_pred)
+st.write(f"### 📈 Model Accuracy: {accuracy * 100:.2f}%")
+st.write("### 📊 Confusion Matrix:")
+cm = confusion_matrix(y_test, y_pred)
+st.write(cm)
+
+st.write("### 📋 Classification Report:")
+st.write(classification_report(y_test, y_pred))
+
+# 📋 **User Input for Prediction**
+st.subheader("📝 Enter Patient Data for Prediction")
+
+age = st.number_input("Age", min_value=18, max_value=120)
+pregnancies = st.number_input("Number of Pregnancies", min_value=0)
+plasma_glucose = st.number_input("Plasma Glucose", min_value=50, max_value=250)
+diastolic_bp = st.number_input("Diastolic Blood Pressure", min_value=40, max_value=200)
+triceps_thickness = st.number_input("Triceps Skin Fold Thickness", min_value=10, max_value=100)
+serum_insulin = st.number_input("Serum Insulin", min_value=0, max_value=1000)
+bmi = st.number_input("BMI", min_value=10.0, max_value=60.0)
+diabetes_pedigree = st.number_input("Diabetes Pedigree Function", min_value=0.0, max_value=2.5)
+
+# Prepare the input for prediction
+user_input = [[pregnancies, plasma_glucose, diastolic_bp, triceps_thickness, serum_insulin, bmi, diabetes_pedigree, age]]
+user_input_scaled = scaler.transform(user_input)  # Standardize input
+
+# Make prediction
+prediction = model.predict(user_input_scaled)
+
+if prediction == 1:
+    st.write("### 🚨 Prediction: The patient is likely to have diabetes.")
+else:
+    st.write("### ✅ Prediction: The patient is likely to not have diabetes.")
 
 
 
