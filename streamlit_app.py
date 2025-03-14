@@ -10,6 +10,23 @@ from sklearn.metrics import accuracy_score, confusion_matrix, classification_rep
 # 🎨 Set Streamlit Page Configuration
 st.set_page_config(page_title="Diabetes Data Explorer", page_icon="📊", layout="wide")
 
+# Custom CSS to change the background color to dark purple
+st.markdown(
+    """
+    <style>
+    body {
+        background-color: #4B0082;  /* Dark Purple background */
+        color: white;  /* White text color */
+    }
+    .stButton button {
+        background-color: #FFD700;  /* Gold button background */
+        color: white;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 # 🌟 Title with color
 st.markdown("<h1 style='text-align: center; color: #FF4B4B;'>🎈 Diabetes Data Explorer</h1>", unsafe_allow_html=True)
 st.info("Analyze and visualize the TAIPEI_diabetes dataset to predict diabetes outcomes based on various factors!")
@@ -121,8 +138,7 @@ user_input_scaled = scaler.transform(user_input)
 prediction = model.predict(user_input_scaled)
 
 if prediction == 1:
-    st.write("### 🚨 Prediction: The patient is likely to have diabetes.")
+    st.write("###  Prediction: The patient is likely to have diabetes.")
 else:
-    st.write("### ✅ Prediction: The patient is likely to not have diabetes.")
-
+    st.write("###  Prediction: The patient is likely to not have diabetes.")
 
