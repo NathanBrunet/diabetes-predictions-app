@@ -10,17 +10,27 @@ from sklearn.metrics import accuracy_score, confusion_matrix, classification_rep
 # 🎨 Set Streamlit Page Configuration
 st.set_page_config(page_title="Diabetes Data Explorer", page_icon="📊", layout="wide")
 
-# Custom CSS to change the background color to white
+# Custom CSS to change the background color to white and improve aesthetics
 st.markdown(
     """
     <style>
     body {
-        background-color: white;  /* White background */
-        color: black;  /* Black text color */
+        background-color: #F0F2F6;  /* Light background */
+        color: black;
     }
     .stButton button {
         background-color: #FFD700;  /* Gold button background */
         color: white;
+    }
+    .stMarkdown, .stTextInput, .stNumberInput, .stSlider, .stSelectbox, .stRadio {
+        font-size: 16px;
+        font-family: 'Helvetica', sans-serif;
+    }
+    .stSubheader, .stTitle {
+        text-align: center;
+    }
+    .stColumns .stTextInput, .stColumns .stNumberInput {
+        margin-bottom: 10px;
     }
     </style>
     """,
@@ -49,58 +59,6 @@ df = pd.read_csv("https://raw.githubusercontent.com/SuzyJoelly/diabetes-predicti
 if 'PatientID' in df.columns:
     df = df.drop(columns=['PatientID'])
 
-# 📊 Sidebar for Data Exploration
-st.sidebar.header("Explore Data")
-age_range = st.sidebar.slider("Select Age Range", min_value=int(df["Age"].min()), max_value=int(df["Age"].max()), value=(20, 60))
-filtered_data = df[(df["Age"] >= age_range[0]) & (df["Age"] <= age_range[1])]
-
-# Show filtered data
-st.sidebar.write(f"### Filtered Data (Age {age_range[0]} - {age_range[1]})")
-st.sidebar.dataframe(filtered_data)
-
-# 🔍 Show Raw Data
-with st.expander("📂 **View Dataset**"):
-    st.write("### Raw Data")  
-    st.dataframe(df)
-
-# 📊 **Data Visualization Section**
-st.subheader("📈 Data Visualization")
-
-# 🔹 Custom Color Palette
-colors = ["#FF4B4B", "#1E88E5", "#FFC107", "#2E7D32", "#D81B60", "#8E24AA"]
-
-# **1. Diabetes Count Plot (Improved Aesthetic)**
-st.write("###  Diabetes Cases")
-fig, ax = plt.subplots(figsize=(5, 4))
-sns.countplot(x=filtered_data["Diabetic"], palette=["#1E88E5", "#D81B60"], ax=ax)
-ax.set_xticklabels(["No Diabetes", "Diabetes"])
-ax.set_ylabel("Count")
-ax.set_xlabel("Diabetic Status")
-ax.set_title("Diabetes Cases", fontsize=14)
-st.pyplot(fig)
-
-# 📊 **2. Age Distribution (More Informative)**
-st.write("### 🎂 Age Distribution")
-fig, ax = plt.subplots(figsize=(8, 5))
-sns.histplot(filtered_data["Age"], bins=20, kde=True, color="#FF4B4B", edgecolor="black")
-ax.set_xlabel("Age")
-ax.set_ylabel("Count")
-st.pyplot(fig)
-
-# 🔍 **3. Glucose Levels vs. Age (Scatter Plot)**
-st.write("### 🍬 Plasma Glucose vs. Age")
-fig, ax = plt.subplots(figsize=(8, 5))
-sns.scatterplot(x=filtered_data["Age"], y=filtered_data["PlasmaGlucose"], hue=filtered_data["Diabetic"], palette=["#1E88E5", "#D81B60"], alpha=0.7)
-ax.set_xlabel("Age")
-ax.set_ylabel("Plasma Glucose Level")
-st.pyplot(fig)
-
-#  **4. Correlation Heatmap (Improved Style)**
-st.write("### 🔥 Feature Correlations")
-fig, ax = plt.subplots(figsize=(10, 6))
-sns.heatmap(filtered_data.corr(), annot=True, cmap="coolwarm", linewidths=0.5, fmt=".2f", ax=ax)
-st.pyplot(fig)
-
 # 🚀 **Model Building and Prediction**
 
 # Split data into features (X) and target (y)
@@ -119,19 +77,6 @@ X_test = scaler.transform(X_test)
 model = RandomForestClassifier(random_state=42)
 model.fit(X_train, y_train)
 
-# Predict on test data
-y_pred = model.predict(X_test)
-
-# Evaluate model performance
-accuracy = accuracy_score(y_test, y_pred)
-st.write(f"### 📈 Model Accuracy: {accuracy * 100:.2f}%")
-st.write("### 📊 Confusion Matrix:")
-cm = confusion_matrix(y_test, y_pred)
-st.write(cm)
-
-st.write("### 📋 Classification Report:")
-st.write(classification_report(y_test, y_pred))
-
 # Prepare the input for prediction
 user_input = pd.DataFrame([[pregnancies, plasma_glucose, diastolic_bp, triceps_thickness, serum_insulin, bmi, diabetes_pedigree, age]],
                           columns=["Pregnancies", "PlasmaGlucose", "DiastolicBloodPressure", "TricepsThickness", 
@@ -146,8 +91,46 @@ user_input_scaled = scaler.transform(user_input)
 # Make prediction
 prediction = model.predict(user_input_scaled)
 
-# Create two columns for layout: one for input and one for prediction output
-col1, col2 = st.columns([1, 2])  # [1, 2] means 1 part for input, 2 parts for output
+# 📊 **Data Visualization Section**
+st.subheader("📈 Data Visualizations")
+
+# 🔹 Custom Color Palette
+colors = ["#FF4B4B", "#1E88E5", "#FFC107", "#2E7D32", "#D81B60", "#8E24AA"]
+
+# **1. Diabetes Count Plot (Improved Aesthetic)**
+st.write("###  Diabetes Cases")
+fig, ax = plt.subplots(figsize=(5, 4))
+sns.countplot(x=df["Diabetic"], palette=["#1E88E5", "#D81B60"], ax=ax)
+ax.set_xticklabels(["No Diabetes", "Diabetes"])
+ax.set_ylabel("Count")
+ax.set_xlabel("Diabetic Status")
+ax.set_title("Diabetes Cases", fontsize=14)
+st.pyplot(fig)
+
+# 📊 **2. Age Distribution (More Informative)**
+st.write("### 🎂 Age Distribution")
+fig, ax = plt.subplots(figsize=(8, 5))
+sns.histplot(df["Age"], bins=20, kde=True, color="#FF4B4B", edgecolor="black")
+ax.set_xlabel("Age")
+ax.set_ylabel("Count")
+st.pyplot(fig)
+
+# 🔍 **3. Glucose Levels vs. Age (Scatter Plot)**
+st.write("### 🍬 Plasma Glucose vs. Age")
+fig, ax = plt.subplots(figsize=(8, 5))
+sns.scatterplot(x=df["Age"], y=df["PlasmaGlucose"], hue=df["Diabetic"], palette=["#1E88E5", "#D81B60"], alpha=0.7)
+ax.set_xlabel("Age")
+ax.set_ylabel("Plasma Glucose Level")
+st.pyplot(fig)
+
+#  **4. Correlation Heatmap (Improved Style)**
+st.write("### 🔥 Feature Correlations")
+fig, ax = plt.subplots(figsize=(10, 6))
+sns.heatmap(df.corr(), annot=True, cmap="coolwarm", linewidths=0.5, fmt=".2f", ax=ax)
+st.pyplot(fig)
+
+# Create layout for input and prediction output (Centered in page)
+col1, col2 = st.columns([1, 1])  # Equal-width columns
 
 with col1:
     st.subheader("📝 Enter Patient Data for Prediction")
@@ -161,11 +144,11 @@ with col1:
     st.write(f"**Diabetes Pedigree**: {diabetes_pedigree}")
 
 with col2:
-    # Display prediction result on the right side
+    # Display prediction result on the right side, aesthetically styled
     if prediction == 1:
-        st.write("### 🚨 Prediction: The patient is likely to have diabetes.")
+        st.markdown(f"<h3 style='color: #D81B60; text-align: center;'>Prediction: The patient is likely to have diabetes.</h3>", unsafe_allow_html=True)
     else:
-        st.write("### ✅ Prediction: The patient is likely to not have diabetes.")
+        st.markdown(f"<h3 style='color: #1E88E5; text-align: center;'>Prediction: The patient is likely to not have diabetes.</h3>", unsafe_allow_html=True)
 
 
 
