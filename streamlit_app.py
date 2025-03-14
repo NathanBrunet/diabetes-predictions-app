@@ -103,8 +103,12 @@ bmi = st.number_input("BMI", min_value=10.0, max_value=60.0)
 diabetes_pedigree = st.number_input("Diabetes Pedigree Function", min_value=0.0, max_value=2.5)
 
 # Prepare the input for prediction
-user_input = [[pregnancies, plasma_glucose, diastolic_bp, triceps_thickness, serum_insulin, bmi, diabetes_pedigree, age]]
-user_input_scaled = scaler.transform(user_input)  # Standardize input
+user_input = pd.DataFrame([[pregnancies, plasma_glucose, diastolic_bp, triceps_thickness, serum_insulin, bmi, diabetes_pedigree, age]],
+                          columns=["Pregnancies", "PlasmaGlucose", "DiastolicBloodPressure", "TricepsThickness", 
+                                   "SerumInsulin", "BMI", "DiabetesPedigree", "Age"])
+
+# Standardize the user input based on the scaler fitted to the training data
+user_input_scaled = scaler.transform(user_input)
 
 # Make prediction
 prediction = model.predict(user_input_scaled)
