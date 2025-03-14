@@ -32,10 +32,6 @@ st.markdown(
     .stColumns .stTextInput, .stColumns .stNumberInput {
         margin-bottom: 10px;
     }
-    .stProgress {
-        height: 30px;
-        background-color: #FF4B4B;
-    }
     </style>
     """,
     unsafe_allow_html=True
@@ -133,10 +129,9 @@ fig, ax = plt.subplots(figsize=(10, 6))
 sns.heatmap(df.corr(), annot=True, cmap="coolwarm", linewidths=0.5, fmt=".2f", ax=ax)
 st.pyplot(fig)
 
-# Layout for user input and prediction output (Side by Side)
+# Create layout for input and prediction output (Centered in page)
 col1, col2 = st.columns([1, 1])  # Equal-width columns
 
-# Left Column for User Inputs
 with col1:
     st.subheader("📝 Enter Patient Data for Prediction")
     st.write(f"**Age**: {age}")
@@ -148,20 +143,11 @@ with col1:
     st.write(f"**BMI**: {bmi}")
     st.write(f"**Diabetes Pedigree**: {diabetes_pedigree}")
 
-# Right Column for Prediction Output (with Progress Bar)
 with col2:
-    st.subheader("🔍 Prediction Probability")
-    # Show progress bar based on prediction
-    prob = model.predict_proba(user_input_scaled)[0][1]  # Probability of being diabetic
-
-    # Progress Bar to show the likelihood of diabetes
-    st.progress(prob)
-
-    # Display prediction result with a visual indicator below the progress bar
-    st.markdown(f"<h3 style='text-align: center;'>Prediction Result</h3>", unsafe_allow_html=True)
+    # Display prediction result on the right side, aesthetically styled
     if prediction == 1:
-        st.markdown(f"<h4 style='color: #D81B60; text-align: center;'>🚨 The patient is likely to have diabetes with {prob * 100:.2f}% confidence.</h4>", unsafe_allow_html=True)
+        st.markdown(f"<h3 style='color: #D81B60; text-align: center;'>🚨 Prediction: The patient is likely to have diabetes.</h3>", unsafe_allow_html=True)
     else:
-        st.markdown(f"<h4 style='color: #1E88E5; text-align: center;'>✅ The patient is likely to not have diabetes with {prob * 100:.2f}% confidence.</h4>", unsafe_allow_html=True)
+        st.markdown(f"<h3 style='color: #1E88E5; text-align: center;'>✅ Prediction: The patient is likely to not have diabetes.</h3>", unsafe_allow_html=True)
 
 
