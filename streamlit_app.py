@@ -107,7 +107,7 @@ user_input = pd.DataFrame([[pregnancies, plasma_glucose, diastolic_bp, triceps_t
                           columns=["Pregnancies", "PlasmaGlucose", "DiastolicBloodPressure", "TricepsThickness", 
                                    "SerumInsulin", "BMI", "DiabetesPedigree", "Age"])
 
-# Ensure the input has the same feature names as the training data
+# Ensure the input has the same feature names and order as the training data
 user_input = user_input[X.columns.tolist()]  # Make sure columns are ordered as in X
 
 # Standardize the user input based on the scaler fitted to the training data
