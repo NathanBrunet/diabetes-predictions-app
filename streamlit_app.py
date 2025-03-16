@@ -43,14 +43,14 @@ st.info("Analyze and visualize the TAIPEI_diabetes dataset to predict diabetes o
 
 # 📂 Sidebar for User Input
 st.sidebar.header("User Input for Prediction")
-age = st.sidebar.number_input("Age", min_value=18, max_value=120)
-pregnancies = st.sidebar.number_input("Number of Pregnancies", min_value=0)
-plasma_glucose = st.sidebar.number_input("Plasma Glucose", min_value=50, max_value=250)
-diastolic_bp = st.sidebar.number_input("Diastolic Blood Pressure", min_value=40, max_value=200)
-triceps_thickness = st.sidebar.number_input("Triceps Skin Fold Thickness", min_value=10, max_value=100)
-serum_insulin = st.sidebar.number_input("Serum Insulin", min_value=0, max_value=1000)
-bmi = st.sidebar.number_input("BMI", min_value=10.0, max_value=60.0)
-diabetes_pedigree = st.sidebar.number_input("Diabetes Pedigree Function", min_value=0.0, max_value=2.5)
+age = st.sidebar.number_input("👵 Age", min_value=18, max_value=120)
+pregnancies = st.sidebar.number_input("🤰 Number of Pregnancies", min_value=0)
+plasma_glucose = st.sidebar.number_input("🍭 Plasma Glucose", min_value=50, max_value=250)
+diastolic_bp = st.sidebar.number_input("💓 Diastolic Blood Pressure", min_value=40, max_value=200)
+triceps_thickness = st.sidebar.number_input("💪 Triceps Skin Fold Thickness", min_value=10, max_value=100)
+serum_insulin = st.sidebar.number_input("💉 Serum Insulin", min_value=0, max_value=1000)
+bmi = st.sidebar.number_input("🏋️ BMI", min_value=10.0, max_value=60.0)
+diabetes_pedigree = st.sidebar.number_input("👨‍⚕️ Diabetes Pedigree Function", min_value=0.0, max_value=2.5)
 
 # 📂 Load Dataset
 df = pd.read_csv("https://raw.githubusercontent.com/SuzyJoelly/diabetes-predictions-app/main/TAIPEI_diabetes.csv")
@@ -134,18 +134,20 @@ col1, col2 = st.columns([1, 1])  # Equal-width columns
 
 with col1:
     st.subheader("📝 Enter Patient Data for Prediction")
-    st.write(f"**Age**: {age}")
-    st.write(f"**Pregnancies**: {pregnancies}")
-    st.write(f"**Plasma Glucose**: {plasma_glucose}")
-    st.write(f"**Diastolic BP**: {diastolic_bp}")
-    st.write(f"**Triceps Thickness**: {triceps_thickness}")
-    st.write(f"**Serum Insulin**: {serum_insulin}")
-    st.write(f"**BMI**: {bmi}")
-    st.write(f"**Diabetes Pedigree**: {diabetes_pedigree}")
+    st.write(f"👵 **Age**: {age}")
+    st.write(f"🤰 **Pregnancies**: {pregnancies}")
+    st.write(f"🍭 **Plasma Glucose**: {plasma_glucose}")
+    st.write(f"💓 **Diastolic BP**: {diastolic_bp}")
+    st.write(f"💪 **Triceps Thickness**: {triceps_thickness}")
+    st.write(f"💉 **Serum Insulin**: {serum_insulin}")
+    st.write(f"🏋️ **BMI**: {bmi}")
+    st.write(f"👨‍⚕️ **Diabetes Pedigree**: {diabetes_pedigree}")
 
 with col2:
-    # Display prediction result on the right side, aesthetically styled
-    if prediction == 1:
-        st.markdown(f"<h3 style='color: #D81B60; text-align: center;'>🚨 Prediction: The patient is likely to have diabetes.</h3>", unsafe_allow_html=True)
-    else:
-        st.markdown(f"<h3 style='color: #1E88E5; text-align: center;'>✅ Prediction: The patient is likely to not have diabetes.</h3>", unsafe_allow_html=True)
+    # Create collapsible section for prediction result
+    with st.expander("Prediction"):
+        if prediction == 1:
+            st.markdown(f"<h3 style='color: #D81B60; text-align: center;'>🚨 Prediction: The patient is likely to have diabetes.</h3>", unsafe_allow_html=True)
+        else:
+            st.markdown(f"<h3 style='color: #1E88E5; text-align: center;'>✅ Prediction: The patient is likely to not have diabetes.</h3>", unsafe_allow_html=True)
+
