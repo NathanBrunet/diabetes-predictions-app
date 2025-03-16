@@ -129,20 +129,6 @@ fig, ax = plt.subplots(figsize=(10, 6))
 sns.heatmap(df.corr(), annot=True, cmap="coolwarm", linewidths=0.5, fmt=".2f", ax=ax)
 st.pyplot(fig)
 
-# Create layout for input and prediction output (Centered in page)
-col1, col2 = st.columns([1, 1])  # Equal-width columns
-
-with col1:
-    st.subheader("📝 Enter Patient Data for Prediction")
-    st.write(f"👵 **Age**: {age}")
-    st.write(f"🤰 **Pregnancies**: {pregnancies}")
-    st.write(f"🍭 **Plasma Glucose**: {plasma_glucose}")
-    st.write(f"💓 **Diastolic BP**: {diastolic_bp}")
-    st.write(f"💪 **Triceps Thickness**: {triceps_thickness}")
-    st.write(f"💉 **Serum Insulin**: {serum_insulin}")
-    st.write(f"🏋️ **BMI**: {bmi}")
-    st.write(f"👨‍⚕️ **Diabetes Pedigree**: {diabetes_pedigree}")
-
 # Move prediction to sidebar
 with st.sidebar.expander("Prediction Result"):
     if prediction == 1:
