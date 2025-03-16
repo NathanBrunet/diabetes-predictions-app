@@ -143,11 +143,10 @@ with col1:
     st.write(f"🏋️ **BMI**: {bmi}")
     st.write(f"👨‍⚕️ **Diabetes Pedigree**: {diabetes_pedigree}")
 
-with col2:
-    # Create collapsible section for prediction result
-    with st.expander("Prediction"):
-        if prediction == 1:
-            st.markdown(f"<h3 style='color: #D81B60; text-align: center;'>🚨 Prediction: The patient is likely to have diabetes.</h3>", unsafe_allow_html=True)
-        else:
-            st.markdown(f"<h3 style='color: #1E88E5; text-align: center;'>✅ Prediction: The patient is likely to not have diabetes.</h3>", unsafe_allow_html=True)
+# Move prediction to sidebar
+with st.sidebar.expander("Prediction Result"):
+    if prediction == 1:
+        st.markdown(f"<h3 style='color: #D81B60; text-align: center;'>🚨 Prediction: The patient is likely to have diabetes.</h3>", unsafe_allow_html=True)
+    else:
+        st.markdown(f"<h3 style='color: #1E88E5; text-align: center;'>✅ Prediction: The patient is likely to not have diabetes.</h3>", unsafe_allow_html=True)
 
