@@ -115,7 +115,7 @@ ax.set_xlabel("Age")
 ax.set_ylabel("Count")
 st.pyplot(fig)
 
-st.write("### 🍬 Plasma Glucose vs. Age")
+st.write("### 🍬 Plasma Glucose/Age")
 fig, ax = plt.subplots(figsize=(8, 5))
 sns.scatterplot(x=df["Age"], y=df["PlasmaGlucose"], hue=df["Diabetic"], palette=["#1E88E5", "#D81B60"], alpha=0.7)
 ax.set_xlabel("Age")
