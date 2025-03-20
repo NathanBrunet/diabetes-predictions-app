@@ -59,6 +59,12 @@ df = pd.read_csv("https://raw.githubusercontent.com/SuzyJoelly/diabetes-predicti
 if 'PatientID' in df.columns:
     df = df.drop(columns=['PatientID'])
 
+# Remove rows with missing values in the target column 'Diabetic'
+df.dropna(subset=['Diabetic'], inplace=True)
+
+# Check for missing values in the rest of the dataset
+df.fillna(df.mean(), inplace=True)  # Handle missing values in the features by filling with the mean
+
 # 🚀 **Model Building and Prediction**
 
 # Split data into features (X) and target (y)
@@ -106,7 +112,6 @@ ax.set_ylabel("Count")
 ax.set_xlabel("Diabetic Status")
 ax.set_title("Diabetes Cases", fontsize=14)
 st.pyplot(fig)
-
 
 st.write("### 🎂 Age Distribution")
 fig, ax = plt.subplots(figsize=(8, 5))
