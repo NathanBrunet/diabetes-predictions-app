@@ -38,8 +38,8 @@ st.markdown(
 )
 
 # 🌟 Title with color
-st.markdown("<h1 style='text-align: center; color: #FF4B4B;'>🎈 Diabetes Data Explorer</h1>", unsafe_allow_html=True)
-st.info("Analyze and visualize the TAIPEI_diabetes dataset to predict diabetes outcomes based on various factors!")
+st.markdown("<h1 style='text-align: center; color: #FF4B4B;'>🎈 Diabe-Track</h1>", unsafe_allow_html=True)
+st.info("Predicting Diabetes Outcomes from Health Data Patterns in the TAIPEI Dataset")
 
 # 💂️ Sidebar for User Input
 st.sidebar.header("User Input for Prediction")
