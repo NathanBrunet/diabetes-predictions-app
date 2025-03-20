@@ -6,6 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+from sklearn.neural_network import MLPClassifier  # Importing MLPClassifier
 
 # 🎨 Set Streamlit Page Configuration
 st.set_page_config(page_title="Diabetes Data Explorer", page_icon="📊", layout="wide")
@@ -59,12 +60,6 @@ df = pd.read_csv("https://raw.githubusercontent.com/SuzyJoelly/diabetes-predicti
 if 'PatientID' in df.columns:
     df = df.drop(columns=['PatientID'])
 
-# Remove rows with missing values in the target column 'Diabetic'
-df.dropna(subset=['Diabetic'], inplace=True)
-
-# Check for missing values in the rest of the dataset
-df.fillna(df.mean(), inplace=True)  # Handle missing values in the features by filling with the mean
-
 # 🚀 **Model Building and Prediction**
 
 # Split data into features (X) and target (y)
@@ -80,8 +75,12 @@ X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
 # Train Random Forest Model
-model = RandomForestClassifier(random_state=42)
-model.fit(X_train, y_train)
+rf_model = RandomForestClassifier(random_state=42)
+rf_model.fit(X_train, y_train)
+
+# Train MLPClassifier Model
+mlp_model = MLPClassifier(hidden_layer_sizes=(100,), max_iter=500, random_state=42)
+mlp_model.fit(X_train, y_train)
 
 # Prepare the input for prediction
 user_input = pd.DataFrame([[pregnancies, plasma_glucose, diastolic_bp, triceps_thickness, serum_insulin, bmi, diabetes_pedigree, age]],
@@ -94,8 +93,20 @@ user_input = user_input[X.columns.tolist()]  # Make sure columns are ordered as 
 # Standardize the user input based on the scaler fitted to the training data
 user_input_scaled = scaler.transform(user_input)
 
-# Make prediction
-prediction = model.predict(user_input_scaled)
+# 💂️ Sidebar for Model Selection
+model_choice = st.sidebar.selectbox("Choose a model", ["Random Forest", "MLPClassifier"])
+
+# Make prediction based on the chosen model
+if model_choice == "Random Forest":
+    prediction = rf_model.predict(user_input_scaled)
+elif model_choice == "MLPClassifier":
+    prediction = mlp_model.predict(user_input_scaled)
+
+# Display the prediction result in the sidebar
+if prediction == 1:
+    st.markdown(f"<h3 style='color: #D81B60; text-align: center;'>🚨 Prediction: The patient is likely to have diabetes.</h3>", unsafe_allow_html=True)
+else:
+    st.markdown(f"<h3 style='color: #1E88E5; text-align: center;'>✅ Prediction: The patient is likely to not have diabetes.</h3>", unsafe_allow_html=True)
 
 # 📊 **Data Visualization Section**
 st.subheader("📊 Data Visualizations")
@@ -126,11 +137,3 @@ sns.scatterplot(x=df["Age"], y=df["PlasmaGlucose"], hue=df["Diabetic"], palette=
 ax.set_xlabel("Age")
 ax.set_ylabel("Plasma Glucose Level")
 st.pyplot(fig)
-
-# Move prediction to sidebar
-with st.sidebar.expander("Prediction Result"):
-    if prediction == 1:
-        st.markdown(f"<h3 style='color: #D81B60; text-align: center;'>🚨 Prediction: The patient is likely to have diabetes.</h3>", unsafe_allow_html=True)
-    else:
-        st.markdown(f"<h3 style='color: #1E88E5; text-align: center;'>✅ Prediction: The patient is likely to not have diabetes.</h3>", unsafe_allow_html=True)
-
